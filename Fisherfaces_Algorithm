@@ -1,0 +1,33 @@
+//Add Dependency
+
+<dependency>
+  <groupId>com.github.wihoho</groupId>
+  <artifactId>face-recognition</artifactId>
+  <version>1.0</version>
+</dependency>
+
+// Build a trainer
+Trainer trainer = Trainer.builder()
+        .metric(new CosineDissimilarity())
+        .featureType(FeatureType.PCA)
+        .numberOfComponents(3)
+        .k(1)
+        .build();
+
+...
+
+// add training data
+trainer.add(convertToMatrix(john1), "john");
+trainer.add(convertToMatrix(john2), "john");
+trainer.add(convertToMatrix(john3), "john");
+
+trainer.add(convertToMatrix(smith1), "smith");
+trainer.add(convertToMatrix(smith2), "smith");
+trainer.add(convertToMatrix(smith3), "smith");
+
+// train
+trainer.train();
+
+// recognize
+assertEquals("john", trainer.recognize(convertToMatrix(john4)));
+assertEquals("smith", trainer.recognize(convertToMatrix(smith4)));
